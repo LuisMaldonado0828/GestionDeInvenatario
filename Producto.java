@@ -8,7 +8,10 @@ public class Producto {
 
 
     public Producto(String Id,String nombre, int cantidad, double precio){
-        this.setId(Id);
+        if(Id == null || Id.trim().isEmpty()){
+            throw new IllegalArgumentException("Debe de contener un ID del producto valido.");
+        }
+        this.Id = Id;
         this.setNombre(nombre);
         this.setCantidad(cantidad);
         this.setPrecio(precio);
@@ -17,15 +20,6 @@ public class Producto {
     public String getId(){
         return Id;
     }
-
-    public void setId(String id) {
-        if(id == null || id.trim().isEmpty()){
-            throw new IllegalArgumentException("Debe de contener un ID del producto valido");
-        }else {
-            this.Id = id;
-        }
-    }
-
 
     public String getNombre() {
         return nombre;
