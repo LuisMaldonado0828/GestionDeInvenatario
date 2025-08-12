@@ -25,6 +25,7 @@ public class Inventario {
         }
         if(esValido){
             productos.add(producto);
+            System.out.println("El producto se agragado correctamente.");
         }else{
             System.out.println("No se pudo agragar el producto, el ID del producto es igual a otro existe.");
         }
@@ -39,63 +40,74 @@ public class Inventario {
             System.out.println("Precio del producto: "+ copFormat.format(articulo.getPrecio()));
 
         }
+        System.out.println("=========================================================");
+        System.out.println("El valor total: del inventario: "+ calcularValorTotal());
+        System.out.println("=========================================================");
 
     }
     public void actualizarProducto(String Id){
-        boolean esValido = true;
         for (Producto articulo: productos){
             if(articulo.getId().equalsIgnoreCase(Id)){
-                System.out.println("\nQue deseas actualizar");
-                System.out.println("1. El nombre");
-                System.out.println("2. La cantidad");
-                System.out.println("3. El precio");
-                System.out.println("Escriba la opcion: ");
-                int opcion = sc.nextInt();
-                sc.nextLine();
-                switch (opcion){
-                    case 1:
-                        System.out.println("Introduce el nombre por el cual quieres cambiarlo: ");
-                        String nombre = sc.nextLine();
-                        articulo.setNombre(nombre);
-                        System.out.println("Nombre actualizado.");
-                        break;
-                    case 2:
-                        System.out.println("Introduce la nueva cantidad : ");
-                        int cantidad = sc.nextInt();
-                        articulo.setCantidad(cantidad);
-                        System.out.println("Cantidad actualizada.");
-                        break;
-                    case 3:
-                        System.out.println("Introduce la nuevo precio: ");
-                        double precio = sc.nextDouble();
-                        articulo.setPrecio(precio);
-                        System.out.println("Precio actualizada");
-                        break;
-                    default:
-                        System.out.println("Esta opción no hace parte del catalogo.");
+                System.out.printf("\nEstas seguro que quieres actualizar(Si/No) -> %s: ",articulo.getNombre());
+                String respuesta = sc.nextLine();
+                if(respuesta.equalsIgnoreCase("Si")){
+                    System.out.println("\nQue deseas actualizar");
+                    System.out.println("1. El nombre");
+                    System.out.println("2. La cantidad");
+                    System.out.println("3. El precio");
+                    System.out.println("Escriba la opcion: ");
+                    int opcion = sc.nextInt();
+                    sc.nextLine();
+                    switch (opcion){
+                        case 1:
+                            System.out.println("Introduce el nombre por el cual quieres cambiarlo: ");
+                            String nombre = sc.nextLine();
+                            articulo.setNombre(nombre);
+                            System.out.println("Nombre actualizado.");
+                            break;
+                        case 2:
+                            System.out.println("Introduce la nueva cantidad : ");
+                            int cantidad = sc.nextInt();
+                            articulo.setCantidad(cantidad);
+                            System.out.println("Cantidad actualizada.");
+                            break;
+                        case 3:
+                            System.out.println("Introduce la nuevo precio: ");
+                            double precio = sc.nextDouble();
+                            articulo.setPrecio(precio);
+                            System.out.println("Precio actualizada");
+                            break;
+                        default:
+                            System.out.println("Esta opción no hace parte del catalogo.");
+                            break;
+                    }
+                }else {
+                    System.out.println("Se ha cancelado la actualización");
+                    return;
                 }
+
             }
         }
     }
     public void eliminarProducto(String Id){
         boolean existe = false;
-        for (Producto articulo: productos){
-            if(articulo.getId().equalsIgnoreCase(Id)){
+        for (int i = 0; i < productos.size(); i++){
+            if(productos.get(i).getId().equalsIgnoreCase(Id)){
                 existe = true;
-                 productos.remove(articulo);
+                 productos.remove(productos.get(i));
                 System.out.println("El producto se a eliminado.");
-                break;
+                return;
             }
         }
         if(!existe){
             System.out.println("Este producto no se encontro en el Inventario.");
         }
     }
-    public double calcularValorTotal(){
+    public String calcularValorTotal(){
         double total = 0;
         for (Producto articulo: productos){
             total += (articulo.getCantidad() * articulo.getPrecio());
         }
-        return total;
+        return copFormat.format(total);
     }
 }
